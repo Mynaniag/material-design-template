@@ -132,6 +132,38 @@ After that, refresh the page and see the changes.
 
 ## __Configure Github hook instead of cron. If VM is not accessible from the Internet, use local git hooks for validation of incoming commits (reject commits if there is a “shit” string in the files)__
 
+Git hook locate ``~/lab/material-design-template/.git/hooks/...``
+
+First, we open the file ``pre-commit.sample`` and put here script:
+
+```bash
+#!/usr/bin/env bash
+
+banword=shit
+
+if git diff --cached | grep -i "$banword";
+        then
+                echo Some one "${banword} into staged file, please dont't do that" 
+                exit 1
+        else
+                echo Test passed successfully
+                exit 0
+        fi
+```
+
+Next step, we save file and rename it to ``pre-commit``
+```bash
+mv pre-commit.sample pre-commit
+```
+
+And now, you have to add a file with ``${banword}`` and make a commit:
+```
+#...do some code
+git add .
+git commit -m "Git hook test"
+```
+Then we will see a warning:
+<img width="685" alt="git hook" src="https://user-images.githubusercontent.com/76659421/136695207-ff11daf2-aa72-419e-9a1e-49b263e057ee.png">
 ---
 
 ## __Configure Nginx to Proxy Websockets and cache static content within 1 hour__
@@ -193,3 +225,5 @@ git rebase --root -i
 ```
 Result:
 <img width="949" alt="squash" src="https://user-images.githubusercontent.com/76659421/136690286-e1ff1873-5d0e-4dad-b8d5-e62ef267a1d7.png">
+
+
