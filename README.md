@@ -1,7 +1,5 @@
 # Task report
 
-# Begin
-
 ## **Spin up a Virtual Machine**
 <br>
 <p align="center">
@@ -142,22 +140,58 @@ After that, refresh the page and see the changes.
 
 ## __Merge feature branch with main, rebase git merge commit, squash all commits__
 
+1) I add some commits into master branch:
 
+```bash
+git checkout master
+#...do some changes
+git add .
+git commit -m "main changes"
+```
 
+2) I create a feature branch and add some commits to it:
 
+```bash
+git branch feature
+git checkout feature
+#...do some changes
+git add .
+git commit -m "feature changes"
+```
 
+3) Comeback to main branch and create final commit:
 
+```bash
+git checkout master
+#...do some changes
+git add .
+git commit -m "Final master commit"
+```
+4) Merge master branch:
 
+```bash
+git checkout master
+git merge feature
+```
 
+Result:
+<img width="975" alt="GIT MERGE BRANCH" src="https://user-images.githubusercontent.com/76659421/136690281-762cbdc6-8146-4073-b270-758ae2ed8168.png">
 
+To rebase git merge commit:
+```bash
+git checkout master
+git rebase feature
+```
+Result:
+<img width="1060" alt="GIT REBASE" src="https://user-images.githubusercontent.com/76659421/136690285-2379c336-75e9-4928-a351-baff61aaeee2.png">
 
-
-
-
-
-
-
-
-
+To combine all the commitments you need to enter the following:
+```bash
+git rebase --root -i
+#Select squash commit and save
+#After that change or not commit text and save again
+```
+Result:
+<img width="949" alt="squash" src="https://user-images.githubusercontent.com/76659421/136690286-e1ff1873-5d0e-4dad-b8d5-e62ef267a1d7.png">
 
 
