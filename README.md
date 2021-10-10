@@ -193,5 +193,3 @@ git rebase --root -i
 ```
 Result:
 <img width="949" alt="squash" src="https://user-images.githubusercontent.com/76659421/136690286-e1ff1873-5d0e-4dad-b8d5-e62ef267a1d7.png">
-
-
