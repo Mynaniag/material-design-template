@@ -1,6 +1,6 @@
 pipeline{
 	agent {
-		label 'worker' //running on node "worker"
+		label 'worker' //running on node "worker"s
 	}
 	tools {
 		nodejs 'NodeJS' 
