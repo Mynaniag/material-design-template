@@ -96,9 +96,7 @@
     
     <img width="1147" alt="Screenshot 2021-10-17 at 17 09 01" src="https://user-images.githubusercontent.com/76659421/137630993-4946e6d3-15bf-4335-a8b4-51e5c828bf70.png">
     
-    Log:
-    
-    <img width="900" alt="Screenshot 2021-10-17 at 15 42 13" src="https://user-images.githubusercontent.com/76659421/137627951-7319bc2f-ca2d-46ca-80ca-532633fd0ac9.png">
+    [Log file.](https://github.com/Mynaniag/material-design-template/blob/master/Week2_CI-CD_tools/log.txt)
 
 ---
 
