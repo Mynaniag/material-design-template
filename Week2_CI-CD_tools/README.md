@@ -114,7 +114,9 @@ Add NodeJS installations with version of NodeJS and global npm packages to insta
 Jenkinsfile with declarative pipeline:
 ```groovy
 pipeline {
-    agent any
+    agent{
+    label 'worker' 
+    }
 
     tools{
         nodejs "NodeJS"
