@@ -89,8 +89,10 @@
     Add Credentials:
     <img width="900" alt="Screenshot 2021-10-17 at 15 51 39" src="https://user-images.githubusercontent.com/76659421/137627946-b43e08dc-c800-4613-b583-0632e421be28.png">
     Result:
+    
     <img width="1147" alt="Screenshot 2021-10-17 at 17 09 01" src="https://user-images.githubusercontent.com/76659421/137630993-4946e6d3-15bf-4335-a8b4-51e5c828bf70.png">
     Log:
+    
     <img width="900" alt="Screenshot 2021-10-17 at 15 42 13" src="https://user-images.githubusercontent.com/76659421/137627951-7319bc2f-ca2d-46ca-80ca-532633fd0ac9.png">
 
 ---
@@ -108,47 +110,12 @@ Add NodeJS installations with version of NodeJS and global npm packages to insta
 Jenkinsfile with declarative pipeline:
 ```groovy
 pipeline{
-	agent {
-		label 'slave' //running on node "slave"
-	}
+	agent any
 	tools {
-		nodejs 'NodeJS' // NodeJS definition
+		nodejs 'NodeJS'
 	}
 	stages{
-		stage ('compressing'){
-			parallel{
-				stage ('JS'){
-					steps{
-	  					sh "ls www/js/ | xargs -I{file} uglifyjs www/js/{file} -o www/min/{file} --compress"  // compressing JS
-					} 
-   				}
-   				stage ('CSS'){
-					steps{
-						sh  "ls www/css/ | xargs -I{file} cleancss www/css/{file} -o www/min/{file}" // cleaning CSS
-					}
-   				}
-			}
-		}
-		stage ('tarball'){
-			steps{
-				sh "tar --exclude=.git --exclude=www/css --exclude=www/js -czvf artifacts.tar.gz *"  // archiving excluding specified files
-			}
-		}
 	}
-	post{
-		success {
-			archiveArtifacts artifacts: 'artifacts.tar.gz' // saving artifacts
-			echo "Success"
-		}
-		failure {
-			echo "There was some error"
-		} 
-		cleanup {
-			deleteDir() // cleaning up working directory
-		}       
-	}
-
-}
 
 ```
 
