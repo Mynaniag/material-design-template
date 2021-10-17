@@ -1,9 +1,9 @@
 pipeline{
 	agent {
-		label 'slave' //running on node "slave"
+		label 'worker' //running on node "worker"
 	}
 	tools {
-		nodejs 'NodeJS' // NodeJS definition
+		nodejs 'NodeJS' 
 	}
 	stages{
 		stage ('compressing'){
