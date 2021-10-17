@@ -1,42 +1,45 @@
-pipeline{
-	agent {
-		label 'worker' //running on node "worker"s
-	}
-	tools {
-		nodejs 'NodeJS' 
-	}
-	stages{
-		stage ('compressing'){
-			parallel{
-				stage ('JS'){
-					steps{
-	  					sh "ls www/js/ | xargs -I{file} uglifyjs www/js/{file} -o www/min/{file} --compress"  // compressing JS
-					} 
-   				}
-   				stage ('CSS'){
-					steps{
-						sh  "ls www/css/ | xargs -I{file} cleancss www/css/{file} -o www/min/{file}" // cleaning CSS
-					}
-   				}
-			}
-		}
-		stage ('tarball'){
-			steps{
-				sh "tar --exclude=.git --exclude=www/css --exclude=www/js -czvf artifacts.tar.gz *"  // archiving excluding specified files
-			}
-		}
-	}
-	post{
-		success {
-			archiveArtifacts artifacts: 'artifacts.tar.gz' // saving artifacts
-			echo "Success"
-		}
-		failure {
-			echo "There was some error"
-		} 
-		cleanup {
-			deleteDir() // cleaning up working directory
-		}       
-	}
+pipeline {
+    agent any
 
+    tools{
+        nodejs "NodeJS"
+    }
+
+    stages {
+        stage("Install"){
+            steps{
+                sh 'npm install --save-dev clean-css'
+                sh 'npm install uglify-js -g'
+            }
+        }
+        stage("Compress"){
+            parallel {
+                stage("uglifyjs"){
+                    steps{
+                        sh 'cat www/js/* | uglifyjs -o www/min/merged-and-compressed.js --compress'
+                    }
+                }
+                stage("cleancss"){
+                    steps{
+                        sh 'cat www/css/* | cleancss -o www/min/merged-and-minified.css'
+                    }
+                }
+            }
+        }
+        stage ('save'){
+			steps{
+				sh "tar --exclude=.git --exclude=www/css --exclude=www/js -czvf backup.tar.gz *" 
+			}
+		}
+		stage("archive"){
+		    steps{
+		        archiveArtifacts artifacts: 'backup.tar.gz', fingerprint: true
+		    }
+		}
+    }
+    post{
+		always {
+			sh 'node --version'
+		}  
+	}
 }
