@@ -85,12 +85,17 @@
     
 3.  Connect agent to master node 
     Add new node ``worker``:
+    
     <img width="900" alt="Screenshot 2021-10-17 at 15 45 12" src="https://user-images.githubusercontent.com/76659421/137627949-1f12f100-e2a8-44b1-ada6-e4acbbf6cd7a.png">
+    
     Add Credentials:
+    
     <img width="900" alt="Screenshot 2021-10-17 at 15 51 39" src="https://user-images.githubusercontent.com/76659421/137627946-b43e08dc-c800-4613-b583-0632e421be28.png">
+    
     Result:
     
     <img width="1147" alt="Screenshot 2021-10-17 at 17 09 01" src="https://user-images.githubusercontent.com/76659421/137630993-4946e6d3-15bf-4335-a8b4-51e5c828bf70.png">
+    
     Log:
     
     <img width="900" alt="Screenshot 2021-10-17 at 15 42 13" src="https://user-images.githubusercontent.com/76659421/137627951-7319bc2f-ca2d-46ca-80ca-532633fd0ac9.png">
