@@ -1,0 +1,374 @@
+Started by user Nikolay Doroshchenko
+Replayed #37
+18:20:41 Connecting to https://api.github.com with no credentials, anonymous access
+Obtained Jenkinsfile from e6224401f1875bc0753ed7f2afa1a558d0ad49f1
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on worker in /var/lib/jenkins/workspace/MultibranchEx_master
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+The recommended git tool is: NONE
+No credentials specified
+Fetching changes from the remote Git repository
+Fetching without tags
+Checking out Revision e6224401f1875bc0753ed7f2afa1a558d0ad49f1 (master)
+Commit message: "Update README.md"
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/MultibranchEx_master/.git # timeout=10
+ > git config remote.origin.url https://github.com/Mynaniag/material-design-template.git # timeout=10
+Fetching upstream changes from https://github.com/Mynaniag/material-design-template.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.25.1'
+ > git fetch --no-tags --force --progress -- https://github.com/Mynaniag/material-design-template.git +refs/heads/master:refs/remotes/origin/master # timeout=10
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f e6224401f1875bc0753ed7f2afa1a558d0ad49f1 # timeout=10
+ > git rev-list --no-walk e6224401f1875bc0753ed7f2afa1a558d0ad49f1 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Tool Install)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Install)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ npm install --save-dev clean-css
+
+up to date, audited 3 packages in 551ms
+
+found 0 vulnerabilities
+[Pipeline] sh
++ npm install uglify-js -g
+
+changed 1 package, and audited 2 packages in 542ms
+
+found 0 vulnerabilities
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Compress)
+[Pipeline] parallel
+[Pipeline] { (Branch: uglifyjs)
+[Pipeline] { (Branch: cleancss)
+[Pipeline] stage
+[Pipeline] { (uglifyjs)
+[Pipeline] stage
+[Pipeline] { (cleancss)
+[Pipeline] tool
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ uglifyjs -o www/min/merged-and-compressed.js --compress
++ cat www/js/init.js www/js/jquery-2.1.1.min.js www/js/materialize.js www/js/materialize.min.js www/js/modernizr.js
++ cleancss -o www/min/merged-and-minified.css
++ cat www/css/font-awesome.min.css www/css/materialize.css www/css/materialize.min.css www/css/style.css
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (save)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ tar --exclude=.git --exclude=www/css --exclude=www/js -czvf backup.tar.gz Feature.txt Jenkinsfile README.md Week2_CI-CD_tools arc.tar.gz artifacts.tar.gz node_modules package-lock.json package.json www
+Feature.txt
+Jenkinsfile
+README.md
+Week2_CI-CD_tools/
+Week2_CI-CD_tools/README.md
+arc.tar.gz
+artifacts.tar.gz
+node_modules/
+node_modules/clean-css/
+node_modules/clean-css/package.json
+node_modules/clean-css/README.md
+node_modules/clean-css/History.md
+node_modules/clean-css/lib/
+node_modules/clean-css/lib/reader/
+node_modules/clean-css/lib/reader/load-remote-resource.js
+node_modules/clean-css/lib/reader/input-source-map-tracker.js
+node_modules/clean-css/lib/reader/is-allowed-resource.js
+node_modules/clean-css/lib/reader/restore-import.js
+node_modules/clean-css/lib/reader/extract-import-url-and-media.js
+node_modules/clean-css/lib/reader/read-sources.js
+node_modules/clean-css/lib/reader/rewrite-url.js
+node_modules/clean-css/lib/reader/match-data-uri.js
+node_modules/clean-css/lib/reader/rebase.js
+node_modules/clean-css/lib/reader/rebase-remote-map.js
+node_modules/clean-css/lib/reader/rebase-local-map.js
+node_modules/clean-css/lib/reader/apply-source-maps.js
+node_modules/clean-css/lib/reader/normalize-path.js
+node_modules/clean-css/lib/reader/load-original-sources.js
+node_modules/clean-css/lib/optimizer/
+node_modules/clean-css/lib/optimizer/invalid-property-error.js
+node_modules/clean-css/lib/optimizer/remove-unused.js
+node_modules/clean-css/lib/optimizer/level-0/
+node_modules/clean-css/lib/optimizer/level-0/optimize.js
+node_modules/clean-css/lib/optimizer/clone.js
+node_modules/clean-css/lib/optimizer/validator.js
+node_modules/clean-css/lib/optimizer/wrap-for-optimizing.js
+node_modules/clean-css/lib/optimizer/configuration/
+node_modules/clean-css/lib/optimizer/configuration/properties/
+node_modules/clean-css/lib/optimizer/configuration/properties/understandable.js
+node_modules/clean-css/lib/optimizer/configuration/break-up.js
+node_modules/clean-css/lib/optimizer/configuration/can-override.js
+node_modules/clean-css/lib/optimizer/configuration/restore.js
+node_modules/clean-css/lib/optimizer/restore-from-optimizing.js
+node_modules/clean-css/lib/optimizer/level-1/
+node_modules/clean-css/lib/optimizer/level-1/value-optimizers/
+node_modules/clean-css/lib/optimizer/level-1/value-optimizers/fraction.js
+node_modules/clean-css/lib/optimizer/level-1/value-optimizers/whitespace.js
+node_modules/clean-css/lib/optimizer/level-1/value-optimizers/time.js
+node_modules/clean-css/lib/optimizer/level-1/value-optimizers/unit.js
+node_modules/clean-css/lib/optimizer/level-1/value-optimizers/color.js
+node_modules/clean-css/lib/optimizer/level-1/value-optimizers/starts-as-url.js
+node_modules/clean-css/lib/optimizer/level-1/value-optimizers/url-whitespace.js
+node_modules/clean-css/lib/optimizer/level-1/value-optimizers/text-quotes.js
+node_modules/clean-css/lib/optimizer/level-1/value-optimizers/zero.js
+node_modules/clean-css/lib/optimizer/level-1/value-optimizers/precision.js
+node_modules/clean-css/lib/optimizer/level-1/value-optimizers/color/
+node_modules/clean-css/lib/optimizer/level-1/value-optimizers/color/shorten-rgb.js
+node_modules/clean-css/lib/optimizer/level-1/value-optimizers/color/shorten-hsl.js
+node_modules/clean-css/lib/optimizer/level-1/value-optimizers/color/shorten-hex.js
+node_modules/clean-css/lib/optimizer/level-1/value-optimizers/degrees.js
+node_modules/clean-css/lib/optimizer/level-1/value-optimizers/url-quotes.js
+node_modules/clean-css/lib/optimizer/level-1/value-optimizers/url-prefix.js
+node_modules/clean-css/lib/optimizer/level-1/optimize.js
+node_modules/clean-css/lib/optimizer/level-1/value-optimizers.js
+node_modules/clean-css/lib/optimizer/level-1/tidy-at-rule.js
+node_modules/clean-css/lib/optimizer/level-1/tidy-block.js
+node_modules/clean-css/lib/optimizer/level-1/tidy-rules.js
+node_modules/clean-css/lib/optimizer/level-1/property-optimizers/
+node_modules/clean-css/lib/optimizer/level-1/property-optimizers/filter.js
+node_modules/clean-css/lib/optimizer/level-1/property-optimizers/font-weight.js
+node_modules/clean-css/lib/optimizer/level-1/property-optimizers/margin.js
+node_modules/clean-css/lib/optimizer/level-1/property-optimizers/border-radius.js
+node_modules/clean-css/lib/optimizer/level-1/property-optimizers/box-shadow.js
+node_modules/clean-css/lib/optimizer/level-1/property-optimizers/padding.js
+node_modules/clean-css/lib/optimizer/level-1/property-optimizers/outline.js
+node_modules/clean-css/lib/optimizer/level-1/property-optimizers/background.js
+node_modules/clean-css/lib/optimizer/level-1/sort-selectors.js
+node_modules/clean-css/lib/optimizer/level-1/property-optimizers.js
+node_modules/clean-css/lib/optimizer/vendor-prefixes.js
+node_modules/clean-css/lib/optimizer/hack.js
+node_modules/clean-css/lib/optimizer/level-2/
+node_modules/clean-css/lib/optimizer/level-2/rules-overlap.js
+node_modules/clean-css/lib/optimizer/level-2/tidy-rule-duplicates.js
+node_modules/clean-css/lib/optimizer/level-2/optimize.js
+node_modules/clean-css/lib/optimizer/level-2/properties/
+node_modules/clean-css/lib/optimizer/level-2/properties/optimize.js
+node_modules/clean-css/lib/optimizer/level-2/properties/every-values-pair.js
+node_modules/clean-css/lib/optimizer/level-2/properties/is-mergeable-shorthand.js
+node_modules/clean-css/lib/optimizer/level-2/properties/has-same-values.js
+node_modules/clean-css/lib/optimizer/level-2/properties/has-unset.js
+node_modules/clean-css/lib/optimizer/level-2/properties/override-properties.js
+node_modules/clean-css/lib/optimizer/level-2/properties/is-component-of.js
+node_modules/clean-css/lib/optimizer/level-2/properties/find-component-in.js
+node_modules/clean-css/lib/optimizer/level-2/properties/has-inherit.js
+node_modules/clean-css/lib/optimizer/level-2/properties/merge-into-shorthands.js
+node_modules/clean-css/lib/optimizer/level-2/properties/overrides-non-component-shorthand.js
+node_modules/clean-css/lib/optimizer/level-2/properties/populate-components.js
+node_modules/clean-css/lib/optimizer/level-2/remove-duplicate-media-queries.js
+node_modules/clean-css/lib/optimizer/level-2/restructure.js
+node_modules/clean-css/lib/optimizer/level-2/is-mergeable.js
+node_modules/clean-css/lib/optimizer/level-2/remove-unused-at-rules.js
+node_modules/clean-css/lib/optimizer/level-2/merge-media-queries.js
+node_modules/clean-css/lib/optimizer/level-2/extract-properties.js
+node_modules/clean-css/lib/optimizer/level-2/restore-with-components.js
+node_modules/clean-css/lib/optimizer/level-2/merge-non-adjacent-by-body.js
+node_modules/clean-css/lib/optimizer/level-2/specificities-overlap.js
+node_modules/clean-css/lib/optimizer/level-2/reorderable.js
+node_modules/clean-css/lib/optimizer/level-2/reduce-non-adjacent.js
+node_modules/clean-css/lib/optimizer/level-2/remove-duplicates.js
+node_modules/clean-css/lib/optimizer/level-2/merge-adjacent.js
+node_modules/clean-css/lib/optimizer/level-2/remove-duplicate-font-at-rules.js
+node_modules/clean-css/lib/optimizer/level-2/merge-non-adjacent-by-selector.js
+node_modules/clean-css/lib/optimizer/level-2/specificity.js
+node_modules/clean-css/lib/optimizer/configuration.js
+node_modules/clean-css/lib/writer/
+node_modules/clean-css/lib/writer/helpers.js
+node_modules/clean-css/lib/writer/simple.js
+node_modules/clean-css/lib/writer/one-time.js
+node_modules/clean-css/lib/writer/source-maps.js
+node_modules/clean-css/lib/clean.js
+node_modules/clean-css/lib/tokenizer/
+node_modules/clean-css/lib/tokenizer/marker.js
+node_modules/clean-css/lib/tokenizer/tokenize.js
+node_modules/clean-css/lib/tokenizer/token.js
+node_modules/clean-css/lib/options/
+node_modules/clean-css/lib/options/rebase.js
+node_modules/clean-css/lib/options/fetch.js
+node_modules/clean-css/lib/options/format.js
+node_modules/clean-css/lib/options/optimization-level.js
+node_modules/clean-css/lib/options/inline-request.js
+node_modules/clean-css/lib/options/inline-timeout.js
+node_modules/clean-css/lib/options/rounding-precision.js
+node_modules/clean-css/lib/options/rebase-to.js
+node_modules/clean-css/lib/options/inline.js
+node_modules/clean-css/lib/options/compatibility.js
+node_modules/clean-css/lib/options/plugins.js
+node_modules/clean-css/lib/utils/
+node_modules/clean-css/lib/utils/has-protocol.js
+node_modules/clean-css/lib/utils/is-import.js
+node_modules/clean-css/lib/utils/split.js
+node_modules/clean-css/lib/utils/natural-compare.js
+node_modules/clean-css/lib/utils/clone-array.js
+node_modules/clean-css/lib/utils/is-http-resource.js
+node_modules/clean-css/lib/utils/is-https-resource.js
+node_modules/clean-css/lib/utils/format-position.js
+node_modules/clean-css/lib/utils/is-remote-resource.js
+node_modules/clean-css/lib/utils/override.js
+node_modules/clean-css/lib/utils/is-data-uri-resource.js
+node_modules/clean-css/index.js
+node_modules/clean-css/LICENSE
+node_modules/source-map/
+node_modules/source-map/package.json
+node_modules/source-map/README.md
+node_modules/source-map/source-map.js
+node_modules/source-map/source-map.d.ts
+node_modules/source-map/dist/
+node_modules/source-map/dist/source-map.js
+node_modules/source-map/dist/source-map.min.js.map
+node_modules/source-map/dist/source-map.debug.js
+node_modules/source-map/dist/source-map.min.js
+node_modules/source-map/lib/
+node_modules/source-map/lib/util.js
+node_modules/source-map/lib/base64-vlq.js
+node_modules/source-map/lib/mapping-list.js
+node_modules/source-map/lib/base64.js
+node_modules/source-map/lib/source-map-consumer.js
+node_modules/source-map/lib/binary-search.js
+node_modules/source-map/lib/source-map-generator.js
+node_modules/source-map/lib/source-node.js
+node_modules/source-map/lib/quick-sort.js
+node_modules/source-map/lib/array-set.js
+node_modules/source-map/LICENSE
+node_modules/source-map/CHANGELOG.md
+node_modules/.package-lock.json
+package-lock.json
+package.json
+www/
+www/contact.php
+www/font/
+www/font/roboto/
+www/font/roboto/Roboto-Medium.ttf
+www/font/roboto/Roboto-Regular.woff2
+www/font/roboto/Roboto-Medium.woff2
+www/font/roboto/Roboto-Bold.woff
+www/font/roboto/Roboto-Bold.ttf
+www/font/roboto/Roboto-Medium.woff
+www/font/roboto/Roboto-Thin.woff2
+www/font/roboto/Roboto-Light.woff
+www/font/roboto/Roboto-Light.woff2
+www/font/roboto/Roboto-Regular.woff
+www/font/roboto/Roboto-Thin.woff
+www/font/roboto/Roboto-Thin.ttf
+www/font/roboto/Roboto-Regular.ttf
+www/font/roboto/Roboto-Light.ttf
+www/font/roboto/Roboto-Bold.woff2
+www/font/material-design-icons/
+www/font/material-design-icons/Material-Design-Icons.woff2
+www/font/material-design-icons/Material-Design-Icons.woff
+www/font/material-design-icons/Material-Design-Icons.ttf
+www/font/material-design-icons/Material-Design-Icons.svg
+www/font/material-design-icons/LICENSE.txt
+www/font/material-design-icons/Material-Design-Icons.eot
+www/favicon.ico
+www/fonts/
+www/fonts/FontAwesome.otf
+www/fonts/fontawesome-webfont.svg
+www/fonts/fontawesome-webfont.ttf
+www/fonts/fontawesome-webfont.eot
+www/fonts/fontawesome-webfont.woff
+www/index.html
+www/min/
+www/min/materialize.js
+www/min/materialize.css
+www/min/init.js
+www/min/jquery-2.1.1.min.js
+www/min/modernizr.js
+www/min/plugin-min.js
+www/min/custom-min.js
+www/min/custom-min.css
+www/min/materialize.min.js
+www/min/style.css
+www/min/plugin-min.css
+www/min/merged-and-compressed.js
+www/min/font-awesome.min.css
+www/min/materialize.min.css
+www/min/merged-and-minified.css
+www/img/
+www/img/avatar1.png
+www/img/avatar3.png
+www/img/project6.jpeg
+www/img/avatar4.png
+www/img/project1.jpg
+www/img/project2.jpeg
+www/img/parallax1.png
+www/img/project3.png
+www/img/project4.jpg
+www/img/project5.png
+www/img/avatar2.png
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (archive)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] archiveArtifacts
+Archiving artifacts
+Recording fingerprints
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] sh
++ node --version
+v16.11.1
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
