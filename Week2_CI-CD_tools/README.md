@@ -1,229 +1,175 @@
-# Task reporta
+# Task report week 2
 
-## **Spin up a Virtual Machine**
-<br>
-<p align="center">
-<img width="800" alt="virtualbox" src="https://user-images.githubusercontent.com/76659421/136595470-0ba5e8bb-decb-4b2b-9e99-702e0b8df2fe.png">
-</p>
-</br>
+## **Create Jenkins VM with internet access**
 
----
+1. Register on aws and run 2 virtual machines with Ubuntu 20.04.
 
-## **Install Nginx web server and git**
-To install nginx, run the following commands:
+    <img width="800" alt="Screenshot 2021-10-17 at 13 43 42" src="https://user-images.githubusercontent.com/76659421/137624104-4b0e6ca6-4449-4326-8da8-3225f854ded6.png">
 
-```bash
-sudo apt-get update
-sudo apt-get upgrade
-sudo apt-get install nginx
-#Check the version
-nginx -v
-#Check nginx status (running or not)
-systemctl status nginx
-```
 
-To install git, run the following commands:
+2. Install java 1.8 and Git in the VM.
 
-```bash
-sudo apt-get update
-sudo apt-get upgrade
-sudo apt-get install git
-#Add to config global variables
-git config --global user.name "Nikolay Doroshchenko"
-git config --global user.email "mikalaid@playtika.com"
-```
-Cloning a remote repository:
+    ```bash
+    sudo apt-get update
+    sudo apt-get upgrade
+    #install Java 1.8
+    sudo apt-get install openjdk-8-jre
+    #install Git
+    sudo apt-get install git
+    ```
 
-```bash
-git clone https://github.com/Mynaniag/material-design-template.git
-```
+3. Install Jenkins with enabling autostart on startup.
+    
+     This is the Debian package repository of Jenkins to automate installation and upgrade. To use this repository, first add the key to your system:
+    ```
+    wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
+    ```    
+    Then add a Jenkins apt repository entry:
+    ```bash
+    sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+    ```
+    Update your local package index, then finally install Jenkins:
+    ```bash
+    sudo apt-get update
+    sudo apt-get install jenkins
+    ```
+    Enabling autostart on startup:
+    ```bash
+    sudo systemctl enable jenkins 
+    ```
+    Check Jenkins status:
+    ```bash
+    sudo systemctl status jenkins
+    ```
 
-Generate ssh key:
-
-```bash
-ssh-keygen
-cat /home/${USER}/.ssh/id_rsa.pub #<----- The output should be copied and pasted into your git settings.
-```
----
-## **Fork GitHub repository**
-
-1. On GitHub, navigate to the [joashp/material-design-template](https://github.com/joashp/material-design-template).
-2. In the top-right corner of the page, click Fork.
-
-<p align="center">
-<img width="190" alt="Fork" src="https://user-images.githubusercontent.com/76659421/136669036-be5f845c-5107-4077-881d-159bf288e762.png">
-</p>
-
----
-
-## __Setup a cron job for a regular (every 1 minute) checkout from main branch__
-
-### First step - install cronjob. 
-
-To install cron, run the following commands:
-```bash
-sudo apt update
-sudo apt install cron
-```
-To enable cron, enter this command:
-```bash
-sudo systemctl enable cron
-```
-Output:
-```
-Synchronizing state of cron.service with SysV service script with /lib/systemd/systemd-sysv-install.
-Executing: /lib/systemd/systemd-sysv-install enable cron
-```
-### Second step - write script.
-
-Open crontab file:
-```bash
-crontab -e
-``` 
-After using ``crontab -e`` command, select some text editor and write this line at the end.
-```bash
-* * * * * cd /home/${USER}/lab/material-design-template && git pull origin master 2>&1 | /usr/bin/logger -t GITLOG1MIN
-```
-To display logs with information about cronjob operation, enter the following command:
-```
-grep GITLOG /var/log/syslog
-```
-Output:
-```
-Oct  9 19:14:01 mikalaid CRON[28298]: (mikalaid) CMD (cd /home/mikalaid/lab/material-design-template && git pull origin master 2>&1 | /usr/bin/logger -t GITLOG1MIN)
-Oct  9 19:14:01 mikalaid GITLOG1MIN: From https://github.com/Mynaniag/material-design-template
-Oct  9 19:14:01 mikalaid GITLOG1MIN:  * branch            master     -> FETCH_HEAD
-Oct  9 19:14:01 mikalaid GITLOG1MIN: Already up to date.
-```
-
-## __-Nginx configuration-__
-
-In order for the site to be accessible in a browser, you must:
-1. Configure the ports in the VM:
+4. Setup custom port 8081 for Jenkins.
    
-   <img width="638" alt="port" src="https://user-images.githubusercontent.com/76659421/136686663-27bcd038-1a7a-46cd-97f9-1c87c9a072a3.png">
+    Open file ``vi /etc/defaul/jenkins`` and change port 8080 >> 8081:
 
-2. Change the line in the ``default`` located in ``etc/nginx/sites-enabled/``:
-```bash
-root /home/mikalaid/lab/material-design-template/www; #default string <-- root /var/www/html;
-```
+    <img width="800" alt="Screenshot 2021-10-17 at 14 58 52" src="https://user-images.githubusercontent.com/76659421/137626321-34e3193e-c7c2-41d4-8fa2-2c4f8f91f8d9.png">
+
+5.  Setup plugin on Jenkins - GitHub and Role-based authorization strategy 
+
+    Go ``Dashboard->Manage Jenkins->Manage Plugins``:
+
+    <img width="500" alt="Screenshot 2021-10-17 at 15 06 39" src="https://user-images.githubusercontent.com/76659421/137626579-ab6f3276-1180-43ce-a405-c4ffaa8cfc7a.png">
+    
+    <img width="800" alt="Screenshot 2021-10-17 at 15 07 16" src="https://user-images.githubusercontent.com/76659421/137626578-f479a6f4-1381-4bfe-9060-652337b56f42.png">
+
+6.  Add new user.
+
+    <img width="387" alt="Screenshot 2021-10-17 at 15 23 03" src="https://user-images.githubusercontent.com/76659421/137627086-4204da6d-6e0a-45b0-9a3f-eeb678f58910.png">
+
+---
+## **Create Agent VM**
+
+1.  Install openjdk-8-jre, Git.
+    ```bash
+    sudo apt-get update
+    sudo apt-get upgrade
+    #install Java 1.8
+    sudo apt-get install openjdk-8-jre
+    #install Git
+    sudo apt-get install git
+    ```
+
+2.  Prepare SSH keys 
+    ```bash
+    sudo adduser jenkins1
+    sudo su jenkins1
+    ssh-keygen -b 4096
+    cat ~/.ssh/id_rsa.pub #copy this 
+    exit #back to root
+    mkdir /var/lib/jenkins1
+    ```
+    
+3.  Connect agent to master node 
+    Add new node ``worker``:
+    <img width="900" alt="Screenshot 2021-10-17 at 15 45 12" src="https://user-images.githubusercontent.com/76659421/137627949-1f12f100-e2a8-44b1-ada6-e4acbbf6cd7a.png">
+    Add Credentials:
+    <img width="900" alt="Screenshot 2021-10-17 at 15 51 39" src="https://user-images.githubusercontent.com/76659421/137627946-b43e08dc-c800-4613-b583-0632e421be28.png">
+    Result:
+    <img width="1147" alt="Screenshot 2021-10-17 at 17 09 01" src="https://user-images.githubusercontent.com/76659421/137630993-4946e6d3-15bf-4335-a8b4-51e5c828bf70.png">
+    Log:
+    <img width="900" alt="Screenshot 2021-10-17 at 15 42 13" src="https://user-images.githubusercontent.com/76659421/137627951-7319bc2f-ca2d-46ca-80ca-532633fd0ac9.png">
 
 ---
 
-## __Update index.html from your machine, push changes to Git and confirm updated content on web page__
+## **Configure tools – NodeJS**
 
-Open index.html file in /www directory and change any line.
-```bash
-vi index.html
-#some changes
-```
-Push changes to Git:
-```
-git add .
-git commit -m "Change index.html"
-git push origin main
-```
-After that, refresh the page and see the changes. 
+Manage Jenkins->Global tool configuration 
 
-<img width="1054" alt="Site new" src="https://user-images.githubusercontent.com/76659421/136685867-cb176ca5-f320-47ce-8695-cd1d68daf2aa.png">
-
+Add NodeJS installations with version of NodeJS and global npm packages to install (uglify-js, clean-css-cli) 
+    <img width="900" alt="Screenshot 2021-10-17 at 15 50 03" src="https://user-images.githubusercontent.com/76659421/137627948-dce0b18f-2bc1-47c8-886e-3ed305684cc4.png">
 
 ---
+## **Create “Multibranch Pipeline” pipeline job**
 
-## __Configure Github hook instead of cron. If VM is not accessible from the Internet, use local git hooks for validation of incoming commits (reject commits if there is a “shit” string in the files)__
+Jenkinsfile with declarative pipeline:
+```groovy
+pipeline{
+	agent {
+		label 'slave' //running on node "slave"
+	}
+	tools {
+		nodejs 'NodeJS' // NodeJS definition
+	}
+	stages{
+		stage ('compressing'){
+			parallel{
+				stage ('JS'){
+					steps{
+	  					sh "ls www/js/ | xargs -I{file} uglifyjs www/js/{file} -o www/min/{file} --compress"  // compressing JS
+					} 
+   				}
+   				stage ('CSS'){
+					steps{
+						sh  "ls www/css/ | xargs -I{file} cleancss www/css/{file} -o www/min/{file}" // cleaning CSS
+					}
+   				}
+			}
+		}
+		stage ('tarball'){
+			steps{
+				sh "tar --exclude=.git --exclude=www/css --exclude=www/js -czvf artifacts.tar.gz *"  // archiving excluding specified files
+			}
+		}
+	}
+	post{
+		success {
+			archiveArtifacts artifacts: 'artifacts.tar.gz' // saving artifacts
+			echo "Success"
+		}
+		failure {
+			echo "There was some error"
+		} 
+		cleanup {
+			deleteDir() // cleaning up working directory
+		}       
+	}
 
-Git hook locate ``~/lab/material-design-template/.git/hooks/...``
+}
 
-First, we open the file ``pre-commit.sample`` and put here script:
-
-```bash
-#!/usr/bin/env bash
-
-banword=shit
-
-if git diff --cached | grep -i "$banword";
-        then
-                echo Some one "${banword} into staged file, please dont't do that" 
-                exit 1
-        else
-                echo Test passed successfully
-                exit 0
-        fi
-```
-
-Next step, we save file and rename it to ``pre-commit``
-```bash
-mv pre-commit.sample pre-commit
-```
-
-And now, you have to add a file with ``${banword}`` and make a commit:
-```
-#...do some code
-git add .
-git commit -m "Git hook test"
-```
-Then we will see a warning:
-<img width="685" alt="git hook" src="https://user-images.githubusercontent.com/76659421/136695207-ff11daf2-aa72-419e-9a1e-49b263e057ee.png">
----
-
-## __Configure Nginx to Proxy Websockets and cache static content within 1 hour__
-
----
-
-## __Merge feature branch with main, rebase git merge commit, squash all commits__
-
-1) I add some commits into master branch:
-
-```bash
-git checkout master
-#...do some changes
-git add .
-git commit -m "main changes"
-```
-
-2) I create a feature branch and add some commits to it:
-
-```bash
-git branch feature
-git checkout feature
-#...do some changes
-git add .
-git commit -m "feature changes"
-```
-
-3) Comeback to main branch and create final commit:
-
-```bash
-git checkout master
-#...do some changes
-git add .
-git commit -m "Final master commit"
-```
-4) Merge master branch:
-
-```bash
-git checkout master
-git merge feature
 ```
 
 Result:
-<img width="975" alt="GIT MERGE BRANCH" src="https://user-images.githubusercontent.com/76659421/136690281-762cbdc6-8146-4073-b270-758ae2ed8168.png">
+<img width="1186" alt="Screenshot 2021-10-17 at 18 09 00" src="https://user-images.githubusercontent.com/76659421/137633839-5efec45a-82c0-4538-8264-4f725226049d.png">
 
-To rebase git merge commit:
-```bash
-git checkout master
-git rebase feature
-```
-Result:
-<img width="1060" alt="GIT REBASE" src="https://user-images.githubusercontent.com/76659421/136690285-2379c336-75e9-4928-a351-baff61aaeee2.png">
+Log:
+<img width="1282" alt="Screenshot 2021-10-17 at 18 08 16" src="https://user-images.githubusercontent.com/76659421/137633841-96a706c3-cb22-43d8-83d5-2d822a3304bd.png">
 
-To combine all the commitments you need to enter the following:
-```bash
-git rebase --root -i
-#Select squash commit and save
-#After that change or not commit text and save again
-```
-Result:
-<img width="949" alt="squash" src="https://user-images.githubusercontent.com/76659421/136690286-e1ff1873-5d0e-4dad-b8d5-e62ef267a1d7.png">
+---
 
+## **Setup the GitHub webhook to trigger the jobs**
+1.  Change setting in Jenkins Configuration:
 
+    <img width="900" alt="Screenshot 2021-10-17 at 17 38 44" src="https://user-images.githubusercontent.com/76659421/137633838-8ca1095b-baa9-429e-b950-0679501c3180.png">
+2.  Create webhook on github GUI:
+
+    <img width="900" alt="Screenshot 2021-10-17 at 17 54 25" src="https://user-images.githubusercontent.com/76659421/137633847-bce2e5fe-b361-4635-95f7-6554b83dc341.png">
+3.  Generate token for Jenkins:
+
+    <img width="900" alt="Screenshot 2021-10-17 at 17 34 31" src="https://user-images.githubusercontent.com/76659421/137633996-ea505446-ba63-44e2-a734-fcaaf63b914c.png">
+4.  Githook work:
+
+    <img width="900" alt="Screenshot 2021-10-17 at 18 25 15" src="https://user-images.githubusercontent.com/76659421/137634062-dae06ef9-e39d-436b-bf19-ff0059379ea7.png">
