@@ -6,7 +6,7 @@ node ("worker"){
         sh "rm results.tar.gz"
 }
     stage("Checkout") {
-        git url: "https://github.com/Tellz777/mdt"
+        git url: "https://Mynaniag/material-design-template"
 }
     stage("Compressing") {
             parallel (
