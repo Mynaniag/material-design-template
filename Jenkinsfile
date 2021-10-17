@@ -1,26 +1,42 @@
-node ("worker"){
-    stage("NodeJS setup") {
-        env.NODEJS_HOME="${tool 'nodejs'}"
-        env.PATH="${env.NODEJS_HOME}/bin:${env.PATH}"
-        sh "echo `npm --version`"
-        sh "rm results.tar.gz"
-}
-    stage("Checkout") {
-        git url: "https://Mynaniag/material-design-template"
-}
-    stage("Compressing") {
-            parallel (
-                "Compress-js": {
-                    sh "ls www/js/ | xargs -I{i} uglifyjs www/js/{i} -o www/min/{i} -c"
+pipeline{
+	agent {
+		label 'slave' //running on node "slave"
+	}
+	tools {
+		nodejs 'NodeJS' // NodeJS definition
+	}
+	stages{
+		stage ('compressing'){
+			parallel{
+				stage ('JS'){
+					steps{
+	  					sh "ls www/js/ | xargs -I{file} uglifyjs www/js/{file} -o www/min/{file} --compress"  // compressing JS
+					} 
+   				}
+   				stage ('CSS'){
+					steps{
+						sh  "ls www/css/ | xargs -I{file} cleancss www/css/{file} -o www/min/{file}" // cleaning CSS
+					}
+   				}
+			}
+		}
+		stage ('tarball'){
+			steps{
+				sh "tar --exclude=.git --exclude=www/css --exclude=www/js -czvf artifacts.tar.gz *"  // archiving excluding specified files
+			}
+		}
+	}
+	post{
+		success {
+			archiveArtifacts artifacts: 'artifacts.tar.gz' // saving artifacts
+			echo "Success"
+		}
+		failure {
+			echo "There was some error"
+		} 
+		cleanup {
+			deleteDir() // cleaning up working directory
+		}       
+	}
 
-},
-                "Compress-css": {
-                    sh "ls www/css/ | xargs -I{i} cleancss www/css/{i} -o www/min/{i}"
-        }
-    )  
-}
-    stage("Archiving results") {
-        sh "tar --exclude='www/js' --exclude='www/css' --exclude='.git' -zcvf results.tar.gz *"
-        archiveArtifacts artifacts: 'results.tar.gz', onlyIfSuccessful: true
-    }
 }
