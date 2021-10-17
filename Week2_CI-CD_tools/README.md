@@ -96,7 +96,8 @@
     
     <img width="1147" alt="Screenshot 2021-10-17 at 17 09 01" src="https://user-images.githubusercontent.com/76659421/137630993-4946e6d3-15bf-4335-a8b4-51e5c828bf70.png">
     
-    [Log file.](https://github.com/Mynaniag/material-design-template/blob/master/Week2_CI-CD_tools/log.txt)
+    Log:
+    <img width="900" alt="Screenshot 2021-10-17 at 15 42 13" src="https://user-images.githubusercontent.com/76659421/137627951-7319bc2f-ca2d-46ca-80ca-532633fd0ac9.png">
 
 ---
 
@@ -161,10 +162,9 @@ pipeline {
 ```
 
 Result:
-<img width="1186" alt="Screenshot 2021-10-17 at 18 09 00" src="https://user-images.githubusercontent.com/76659421/137633839-5efec45a-82c0-4538-8264-4f725226049d.png">
+<img width="1444" alt="Screenshot 2021-10-17 at 21 25 15" src="https://user-images.githubusercontent.com/76659421/137640324-e866a9fe-05ae-465a-9414-86ed2ed3e367.png">
 
-Log:
-<img width="1282" alt="Screenshot 2021-10-17 at 18 08 16" src="https://user-images.githubusercontent.com/76659421/137633841-96a706c3-cb22-43d8-83d5-2d822a3304bd.png">
+[Log file.](https://github.com/Mynaniag/material-design-template/blob/master/Week2_CI-CD_tools/log.txt)
 
 ---
 
